@@ -46,6 +46,8 @@ config :cors_plug,
   origin: ["http://localhost:8080"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 
+config :hound, driver: "phantomjs"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
