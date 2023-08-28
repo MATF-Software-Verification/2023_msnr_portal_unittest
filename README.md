@@ -1,1 +1,1 @@
-# 2023_msnr_portal_unittest
+# 2023_msnr_portal_e2e_testing
