@@ -17,9 +17,19 @@ elm make --output=app.js src/Main.elm
 http-server-spa .
 ```
 ## Pokretanje testova
-Neophodno je prvo pokrenuti webdriver kako bismo mogli pokrenuti testove, u radu je korišćen ***chromedriver***, poziv je sledeći
+Testovi su smešteni na putanji ***portal/msnr_api/test/e2e***.
+Neophodno je prvo pokrenuti webdriver kako bismo mogli pokrenuti testove, u radu se mogu koristiti ***chromedriver*** i ***phantomJS***. Podešavanje webdriver-a koji želite koristiti se vrši u 
+datotekama ***config.exs, test.exs i dev.exs***:
+```
+config :hound, driver: "webdriver"
+```
+Poziv za chromedriver je sledeći
 ```
 chromedriver
+```
+Poziv za chromedriver je sledeći
+```
+phantomjs --wd
 ```
 Testovi se potom mogu pokrenuti pozivom naredne komande iz direktorijuma msnr_api
 ```
