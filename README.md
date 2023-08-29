@@ -1,5 +1,5 @@
 # 2023_msnr_portal_e2e_testing
-
+# Opis projekta
 # Instalacija
 ## Preuzimanje projekta
 ```git clone git@github.com:MATF-Software-Verification/2023_msnr_portal_unittest.git```
@@ -21,7 +21,7 @@ Testovi su smešteni na putanji ***portal/msnr_api/test/e2e***.
 Neophodno je prvo pokrenuti webdriver kako bismo mogli pokrenuti testove, u radu se mogu koristiti ***chromedriver*** i ***phantomJS***. Podešavanje webdriver-a koji želite koristiti se vrši u 
 datotekama ***config.exs, test.exs i dev.exs***:
 ```
-config :hound, driver: "webdriver"
+config :hound, driver: "odgovarajući webdriver"
 ```
 Poziv za chromedriver je sledeći
 ```
