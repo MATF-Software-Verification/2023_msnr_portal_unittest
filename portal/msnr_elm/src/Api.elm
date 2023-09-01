@@ -31,6 +31,7 @@ type alias Endpoints =
     , documents : Int -> String
     , document : Int -> String
     , topics : Int -> String
+    , topic : String
     , signup : Int -> String
     }
 
@@ -54,6 +55,7 @@ endpoints =
     , document = \id -> relativeUrl [ "documents", fromInt id ]
     , documents = \actId -> relativeUrl [ "assignments", fromInt actId, "documents" ]
     , topics = \semId -> relativeUrl [ "semesters", fromInt semId, "topics" ]
+    , topic = "topics"
     , signup = \id -> relativeUrl [ "signups", fromInt id ]
     , assignments = \semId -> relativeUrl [ "semesters", fromInt semId, "assignments" ]
     , assignment = \id -> relativeUrl [ "assignments", fromInt id ]
