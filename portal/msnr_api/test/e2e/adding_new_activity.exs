@@ -2,9 +2,6 @@ defmodule MsnrApi.LoginTest do
   use MsnrApiWeb.ConnCase
   use Hound.Helpers
   
-  alias MsnrApi.StudentRegistrations
-  import MsnrApi.SemestersFixtures
-
   hound_session()
 
   test "adding new activity" do
@@ -54,8 +51,6 @@ defmodule MsnrApi.LoginTest do
     sel = find_within_element(form2, :tag, "select")
     sel |> click()
     find_within_element(sel, :id, "nri-select-3") |> click()
-
-    # take_screenshot("scr/formica.png")
 
     form3 = find_element(:class, "_1c118298")
     inp = find_within_element(form3, :tag, "input")
