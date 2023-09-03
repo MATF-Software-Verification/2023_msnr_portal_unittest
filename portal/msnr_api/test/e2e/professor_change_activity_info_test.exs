@@ -7,9 +7,10 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
   hound_session()
   
   test "professor can sign in and change information for an activity" do
-	#Za ovaj test je neophodno imati unetu barem jednu aktivnost u bazi
+	#Za ovaj test je neophodno imati unetu barem aktivnost "Finalna verzija rada" u bazi
     maximize_window(current_window_handle())
 
+    # logovanje profesora
     navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
 	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
@@ -19,7 +20,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	fill_field({:id, "Nri-Ui-TextInput-Password"}, "test")
 	find_element(:class, "_4d72d302") |> click()
 	:timer.sleep(2000)
-	
+
+	# biramo tab sa aktivnostima
 	maximize_window(current_window_handle())
 	header = find_element(:class, "_c7f4942c")
     tabs = find_within_element(header, :class, "_84f7a906")
@@ -45,7 +47,7 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	button |> click()
 	:timer.sleep(2000)
 	
-	
+	# menjanje aktivnosti
 	whole = find_element(:class, "_6ebe79ea")
 	changes = find_within_element(whole, :class, "_9ebfe20c")
 	btArea = find_within_element(whole, :class, "_e5d31c17")
@@ -59,11 +61,12 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	div_all = find_all_within_element(upper, :class, "_bf3f5e20")
 	{second, _others} = List.pop_at(div_all, 1)
 	to = find_within_element(second, :tag, "input")
-	
+
+	# unosenje novih datuma za aktivnost
 	fill_field(from, "09/04/2023")
 	fill_field(to, "09/17/2023")
-	
-	
+
+	# menjanje polja prijava	
 	{down, _rest} = List.pop_at(all, 1)
 	check = find_within_element(down, :id, "nri-ui-switch-with-default-id")
 	check |> click()
@@ -86,6 +89,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 		end
 	end
 	)
+
+	# provera da li su dobro izmenjeni podaci
 	data = find_all_within_element(row, :class, "_9818385")
 	{changed1, _others} = List.pop_at(data, 0)
 	{changed2, _others} = List.pop_at(data, 1)
