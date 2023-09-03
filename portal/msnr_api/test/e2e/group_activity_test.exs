@@ -11,24 +11,26 @@ defmodule MsnrApi.LoginTest do
     # podrezumevamo da u bazi postoji registrovan korisnik i napravljena prva aktivnost 'grupa'
     # za koju traje prijava
 
+    # prijava kao registrovani student
     navigate_to("http://localhost:8080")
-    bt = find_element(:link_text, "Prijavi se")
-    bt |> click()
+    prijavi_se = find_element(:link_text, "Prijavi se")
+    prijavi_se |> click()
 
     assert current_url() == "http://localhost:8080/login"
 
     form = find_element(:class, "_e90e6910")
-    em = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
-	ps = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
-    sub = find_within_element(form, :class, "_4d72d302")
+    email = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
+	password = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
+    submit = find_within_element(form, :class, "_4d72d302")
     
-    em |> fill_field("jelena")
-    ps |> fill_field("jelena")
-    sub |> click()
+    email |> fill_field("boris")
+    password |> fill_field("boris")
+    submit |> click()
     :timer.sleep(6000)
 
     assert current_url() == "http://localhost:8080/"
 
+    # prijava za aktivnost grupa
     navigate_to("http://localhost:8080/student")
     
     activity_list = find_element(:class, "_afa2b4cc")
@@ -39,35 +41,33 @@ defmodule MsnrApi.LoginTest do
     form = find_element(:class, "_afa2b4cc")
     prijavi_se = find_within_element(form, :class, "_4acf1c22")
     prijavi_se |> click()
-    
     :timer.sleep(6000)
-    take_screenshot("pri_page.png")
-    #assert current_url() == "http://localhost:8080"
-
     
+    # odjava studenta
     header = find_element(:class, "_c7f4942c")
     odjavi_se = find_within_element(header, :class, "_4acf1c22")
     odjavi_se |> click()
 
-    bt = find_element(:link_text, "Prijavi se")
-    bt |> click()
+    # prijava profesora
+    prijavi_se = find_element(:link_text, "Prijavi se")
+    prijavi_se |> click()
 
     form = find_element(:class, "_e90e6910")
-    em = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
-	ps = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
-    sub = find_within_element(form, :class, "_4d72d302")
+    email = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
+	password = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
+    submit = find_within_element(form, :class, "_4d72d302")
     
-    em |> fill_field("test@professor")
-    ps |> fill_field("test")
-    sub |> click()
+    email |> fill_field("test@professor")
+    password |> fill_field("test")
+    submit |> click()
     :timer.sleep(6000)
     
-    
+    # izmena aktivnosti, iskljucivanje prijave
     navigate_to("http://localhost:8080/professor/activities")
 
-    acts= find_element(:class, "_d4912e87")
-    act=find_within_element(acts, :class, "_265f8938")
-    izmeni = find_within_element(act, :class, "_431d219b")
+    aktivnosti = find_element(:class, "_d4912e87")
+    aktivnost_grupa = find_within_element(aktivnosti, :class, "_265f8938")
+    izmeni = find_within_element(aktivnost_grupa, :class, "_431d219b")
     izmeni |> click()
     :timer.sleep(3000)
     take_screenshot("izm.png")
@@ -81,6 +81,7 @@ defmodule MsnrApi.LoginTest do
     sacuvaj |> click()
     :timer.sleep(3000)
 
+    # odjava profesora
     header = find_element(:class, "_c7f4942c")
     odjavi_se = find_within_element(header, :class, "_4acf1c22")
     odjavi_se |> click()
@@ -88,18 +89,18 @@ defmodule MsnrApi.LoginTest do
     bt = find_element(:link_text, "Prijavi se")
     bt |> click()
 
-
+    # prijava studenta
     form = find_element(:class, "_e90e6910")
     em = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
 	ps = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
     sub = find_within_element(form, :class, "_4d72d302")
     
-    take_screenshot("inv.png")
-    em |> fill_field("jelena")
-    ps |> fill_field("jelena")
+    em |> fill_field("boris")
+    ps |> fill_field("boris")
     sub |> click()
     :timer.sleep(6000)
 
+    # ptavljenje grupe
     navigate_to("http://localhost:8080/student")
     
     activity_list = find_element(:class, "_afa2b4cc")
@@ -107,24 +108,25 @@ defmodule MsnrApi.LoginTest do
     group |> click()
     :timer.sleep(6000)
     
+    # biranje prvo dvoje kolega sa spiska onih koji nemaju grupu
     student_list = find_element(:class, "_d4912e87")
     kolege = find_all_within_element(student_list, :class, "_b4b9067e")
     
-    [prvi_kol | ostali] = kolege
-    [drugi | _ ] = ostali
+    [prvi_kolega | ostali] = kolege
+    [drugi_kolega | _ ] = ostali
 
-    prvi_kol |> click()
-    drugi |> click()
+    prvi_kolega |> click()
+    drugi_kolega |> click()
 
     footer = find_element(:class, "_b11429db")
     prijavi_grupu = find_within_element(footer, :class, "_4acf1c22")
     prijavi_grupu |> click()
     
     :timer.sleep(6000)
-    take_screenshot("p.png")
     
+    # provera da li student postoji u tabeli grupa
     navigate_to("http://localhost:4000/api/semesters/1/groups")
-    assert String.contains?(page_source(), "{\"email\":\"jelena\",\"first_name\":\"jelena\",\"group_id\"")
+    assert String.contains?(page_source(), "{\"email\":\"boris\",\"first_name\":\"boris\",\"group_id\"")
     
 
   end
