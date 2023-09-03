@@ -11,6 +11,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 
   @tag timeout: 800000
   test "check whether signinUp or signinOff for a assignment was successful" do
+    # Za ovaj test neophodno je imati barem jednog studenta u bazi i barem jednu aktivnost za koju su 
+    # prijave otvorene kako bi se student mogao prijaviti ili odjaviti za tu aktivnost
     maximize_window(current_window_handle())
 
     navigate_to("http://localhost:8080")
