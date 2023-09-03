@@ -11,6 +11,7 @@ defmodule ProfessorRejectsStudentRequestTest do
 
   @tag timeout: 800000
   test "professor can sign in and reject a student pending and check if mail has been sent" do
+	#Za ovaj test nije potrebno unositi dodatne podatke u bazu
     maximize_window(current_window_handle())
 
     # pravljenje naloga
@@ -34,8 +35,7 @@ defmodule ProfessorRejectsStudentRequestTest do
 	
     navigate_to("http://localhost:8080/")
 	:timer.sleep(1000) 
-	assert {:ok, element} = search_element(:link_text, "Prijavi se")
-	size = window_size(current_window_handle())
+	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
     find_element(:link_text, "Prijavi se") |> click()    
 	assert current_path() == "/login"
 	fill_field({:id, "Nri-Ui-TextInput-Email"}, "test@professor")
@@ -53,24 +53,15 @@ defmodule ProfessorRejectsStudentRequestTest do
     odbaci |> click()
     :timer.sleep(6000)
 
-    take_screenshot("1.png")
-
     confirm = find_element(:class, "_6ebe79ea")
     potvrdi = find_within_element(confirm, :class, "_4acf1c22")
     potvrdi |> click()
     :timer.sleep(6000)
 
-    take_screenshot("2.png")
-
     odbijeni = find_element(:class, "_d4f911eb")
     odbijeni |> click()
     :timer.sleep(6000)
 
-    take_screenshot("3.png")
-
-    svi_odbijeni = find_element(:id, "tab-body-rejected")
-
-    odbijen_st = find_all_within_element(svi_odbijeni, :class, "_8c8496be")
     assert String.contains?(page_source(), "reject@example.com")
 	
 	navigate_to("http://localhost:4000/dev/mailbox/")
@@ -81,13 +72,10 @@ defmodule ProfessorRejectsStudentRequestTest do
 	
     last_mail = List.first(mails)
     last_mail |> click()
-    take_screenshot("mail.png")
-    
     :timer.sleep(6000)
 	
 	assert String.contains?(page_source(), "reject@example.com")
 
-    take_screenshot("mail_body.png")
 	delete_cookies()
   end
 end

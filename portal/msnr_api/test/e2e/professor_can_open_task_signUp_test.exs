@@ -7,6 +7,7 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
   hound_session()
   
   test "professor can open a sign up for an activity" do
+	#Za ovaj test neophodno je da u bazi postoji aktivnost za koju su zatvorene prijave
     maximize_window(current_window_handle())
 
     navigate_to("http://localhost:8080")
@@ -33,8 +34,18 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	rows = find_all_within_element(table, :class, "_265f8938")
 	row = Enum.find(rows, fn r ->
 		data = find_all_within_element(r, :class, "_9818385")
+		{doDatum, _others} = List.pop_at(data, 1)
 		{open, _others} = List.pop_at(data, 3)
-		if (visible_text(open) == "Ne") do
+		
+		danas = Date.utc_today()
+		listaDo = String.split(visible_text(doDatum), ".")
+		
+		{dan, _} = List.pop_at(listaDo, 0)
+		{mesec, _} = List.pop_at(listaDo, 1)
+		{godina, _} = List.pop_at(listaDo, 2)
+		
+		
+		if ((visible_text(open) == "Da") and (String.to_integer(dan) >= danas.day) and (String.to_integer(mesec) >= danas.month) and (String.to_integer(godina) >= danas.year)) do
 			r
 		end
 	end
