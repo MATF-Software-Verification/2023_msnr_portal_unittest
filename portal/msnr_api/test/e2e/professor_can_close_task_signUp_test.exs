@@ -10,6 +10,7 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
     maximize_window(current_window_handle())
 	#Za ovaj test neophodno je da u bazi postoji aktivnost za koju su otvorene prijave
 
+    # logovanje profesora
     navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
 	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
@@ -19,7 +20,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	fill_field({:id, "Nri-Ui-TextInput-Password"}, "test")
 	find_element(:class, "_4d72d302") |> click()
 	:timer.sleep(2000)
-	
+
+	# biramo tab sa aktivnostima
 	maximize_window(current_window_handle())
 	header = find_element(:class, "_c7f4942c")
     tabs = find_within_element(header, :class, "_84f7a906")
@@ -29,7 +31,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	activities |> click()
 	:timer.sleep(3000)
 	assert current_path() == "/professor/activities"
-	
+
+	# ako je prijava otvorena i aktivnost nije zastarela, profesor moze da zatvori prijavu za tu aktivnost
 	table = find_element(:class, "_d4912e87")
 	rows = find_all_within_element(table, :class, "_265f8938")
 	row = Enum.find(rows, fn r ->
@@ -50,6 +53,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 		end
 	end
 	)
+
+	# profesor zatvara prijavu za tu aktivnost
 	txtRow = find_all_within_element(row, :class, "_9818385")
 	{txtData, _others} = List.pop_at(txtRow, 2)
 	txt = visible_text(txtData)
@@ -86,6 +91,7 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	assert closedTxt == "Ne"
 	
 	#assert
+	# biramo poslednji tab
 	{tab, _others} = List.pop_at(allTabs, 5)
 	asgns = find_within_element(tab, :tag, "a")
 	asgns |> click()
