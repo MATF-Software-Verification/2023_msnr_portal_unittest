@@ -32,7 +32,8 @@ defmodule ProfessorRejectsStudentRequestTest do
 	find_element(:class, "_4d72d302") |> click()
 	assert String.contains?(visible_text(find_element(:class, "_fab610da")), "Uspešno ste podneli prijavu! 👍")
 	:timer.sleep(6000)
-	
+
+    # logovanje profesora
     navigate_to("http://localhost:8080/")
 	:timer.sleep(1000) 
 	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
@@ -42,13 +43,15 @@ defmodule ProfessorRejectsStudentRequestTest do
 	fill_field({:id, "Nri-Ui-TextInput-Password"}, "test")
 	find_element(:class, "_4d72d302") |> click()
 	:timer.sleep(2000)
-	
+
 	maximize_window(current_window_handle())
+    # biramo tab sa zahtevima za registraciju
     navigate_to("http://localhost:8080/professor/registrations")
 	assert current_path() == "/professor/registrations"
 	:timer.sleep(3000)
 
 	dugmici = find_element(:class, "_b256c6dd")
+    # odbijamo zahtev za registraciju
     odbaci = find_within_element(dugmici, :class, "_d3f97055")
     odbaci |> click()
     :timer.sleep(6000)
@@ -58,6 +61,7 @@ defmodule ProfessorRejectsStudentRequestTest do
     potvrdi |> click()
     :timer.sleep(6000)
 
+    # proveravamo odbijene
     odbijeni = find_element(:class, "_d4f911eb")
     odbijeni |> click()
     :timer.sleep(6000)
