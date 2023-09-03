@@ -6,13 +6,13 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
   
   hound_session()
   
-  test "professor can sign in and change info for an activity" do
+  test "professor can sign in and change information for an activity" do
+	#Za ovaj test je neophodno imati unetu barem jednu aktivnost u bazi
     maximize_window(current_window_handle())
 
     navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
-	assert {:ok, element} = search_element(:link_text, "Prijavi se")
-	size = window_size(current_window_handle())
+	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
     find_element(:link_text, "Prijavi se") |> click()    
 	assert current_path() == "/login"
 	fill_field({:id, "Nri-Ui-TextInput-Email"}, "test@professor")
@@ -32,7 +32,14 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	
 	table = find_element(:class, "_d4912e87")
 	rows = find_all_within_element(table, :class, "_265f8938")
-	{row, _others} = List.pop_at(rows, 1)
+	row = Enum.find(rows, fn r ->
+		data = find_all_within_element(r, :class, "_9818385")
+		{name, _others} = List.pop_at(data, 2)
+		if (visible_text(name) == "Finalna vezija rada") do
+			r
+		end
+	end
+	)
 	areaBt = find_within_element(row, :class, "_311c48ca")
 	button = find_within_element(areaBt, :class, "_431d219b")
 	button |> click()
@@ -53,30 +60,38 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	{second, _others} = List.pop_at(div_all, 1)
 	to = find_within_element(second, :tag, "input")
 	
-	fill_field(from, "08/17/2023")
-	fill_field(to, "09/01/2023")
+	fill_field(from, "09/04/2023")
+	fill_field(to, "09/17/2023")
 	
 	
 	{down, _rest} = List.pop_at(all, 1)
 	check = find_within_element(down, :id, "nri-ui-switch-with-default-id")
 	check |> click()
-	
-	#points = find_within_element(down, :class, "_1c118298")
-	#num = find_within_element(points, :id, "Nri-Ui-TextInput-Broj-poena")
-	#fill_field(num, "10")
 	:timer.sleep(1000)
 	
 	save = find_within_element(btArea, :id, "save-btn")
 	save |> click()
 	:timer.sleep(3000)
+	refresh_page()
+	:timer.sleep(1000)
 	
 	#assert
+	table = find_element(:class, "_d4912e87")
+	rows = find_all_within_element(table, :class, "_265f8938")
+	row = Enum.find(rows, fn r ->
+		data = find_all_within_element(r, :class, "_9818385")
+		{name, _others} = List.pop_at(data, 2)
+		if (visible_text(name) == "Finalna vezija rada") do
+			r
+		end
+	end
+	)
 	data = find_all_within_element(row, :class, "_9818385")
 	{changed1, _others} = List.pop_at(data, 0)
 	{changed2, _others} = List.pop_at(data, 1)
 	{changed3, _others} = List.pop_at(data, 3)
-	assert String.contains?(visible_text(changed1), "17.08.2023.")
-	assert String.contains?(visible_text(changed2), "01.09.2023.")
+	assert String.contains?(visible_text(changed1), "04.09.2023.")
+	assert String.contains?(visible_text(changed2), "17.09.2023.")
 	assert String.contains?(visible_text(changed3), "Da")
 	:timer.sleep(1000)
 	
