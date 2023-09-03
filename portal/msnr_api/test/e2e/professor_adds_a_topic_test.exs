@@ -10,6 +10,7 @@ defmodule ProfessorCreatesATopicTest do
 	#Za ovaj test nije potrebno da se dodatni podaci unose u bazu pre pokretanja
     maximize_window(current_window_handle())
 
+    # logovanje profesora
     navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
 	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
@@ -19,7 +20,8 @@ defmodule ProfessorCreatesATopicTest do
 	fill_field({:id, "Nri-Ui-TextInput-Password"}, "test")
 	find_element(:class, "_4d72d302") |> click()
 	:timer.sleep(2000)
-	
+
+	# biramo tab sa temama
 	maximize_window(current_window_handle())
 	header = find_element(:class, "_c7f4942c")
     tabs = find_within_element(header, :class, "_84f7a906")
@@ -34,7 +36,8 @@ defmodule ProfessorCreatesATopicTest do
 	topicsBody = find_within_element(body, :class, "_fd567d89")
 	topicsList = find_all_within_element(topicsBody, :class, "_ba485483")
 	topicsNBf = length(topicsList)
-	
+
+	# dodavanje nove teme
 	fill_field({:id, "Nri-Ui-TextInput-Naslov-teme"}, "Nova Tema")
 	find_element(:class, "_b016f64e") |> click()
 	:timer.sleep(3000)
