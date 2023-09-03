@@ -7,8 +7,8 @@ defmodule MsnrApi.LoginTest do
     maximize_window(current_window_handle())
     
     # podrezumevamo da u bazi postoji registrovan korisnik koji je u nekoj grupi,
-    # lista tema i aktivnost za prijavu tema
-
+    # lista tema i aktivnost za prijavu tema (pored grupe kao aktivnost)
+    
     # logovanje kao student
     navigate_to("http://localhost:8080")
     bt = find_element(:link_text, "Prijavi se")

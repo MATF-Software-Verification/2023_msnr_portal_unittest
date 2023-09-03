@@ -4,13 +4,14 @@ defmodule MsnrApi.LoginTest do
 
   hound_session()
 
-  test "error in registration" do
+  test "greska pri registraciji" do
     navigate_to("http://localhost:8080/register")
 
     form = find_element(:class, "_c69dad1f")
     username = find_within_element(form, :id, "Nri-Ui-TextInput-Ime")
     submit = find_within_element(form, :class, "_4d72d302")
 
+    # ne popunjavano sva polja
     username |> fill_field("Ana")
     submit |> click()
 

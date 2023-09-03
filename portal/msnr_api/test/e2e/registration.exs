@@ -8,7 +8,7 @@ defmodule MsnrApi.LoginTest do
   test "registration" do
     maximize_window(current_window_handle())
 
-    # pravljenje naloga
+    # registrovanje novog studenta
     navigate_to("http://localhost:8080")
 
     napravi_nalog = find_element(:class, "_b016f64e")
@@ -23,15 +23,15 @@ defmodule MsnrApi.LoginTest do
     prezime = find_within_element(form, :id, "Nri-Ui-TextInput-Prezime")
     indeks = find_within_element(form, :id, "Nri-Ui-TextInput-Broj-indeksa")
     submit = find_within_element(form, :class, "_4d72d302")
-
-    email |> fill_field("vanja@gmail.com")
-    ime |> fill_field("vanja")
+    
+    email |> fill_field("vanja1@gmail.com")
+    ime |> fill_field("vanja1")
     prezime |> fill_field("vanjic")
-    indeks |> fill_field("7474")
+    indeks |> fill_field("7447")
     submit |> click()
     :timer.sleep(6000)
 
-    # prihvatanje naloga
+    # prihvatanje naloga od strane profesora
     navigate_to("http://localhost:8080")
     bt = find_element(:link_text, "Prijavi se")
     bt |> click()
@@ -62,17 +62,23 @@ defmodule MsnrApi.LoginTest do
     potvrdi |> click()
     :timer.sleep(6000)
 
+    # provera da li je novi student promenio status
     prihvaceni = find_element(:id, "accepted")
     prihvaceni |> click()
     :timer.sleep(6000)
+    
+    poslednje_prihvaceni = find_element(:class, "_8c8496be")
+    name = inner_text(poslednje_prihvaceni)
 
-    svi_prihvaceni = find_element(:id, "tab-body-pending")
-    # take_screenshot("accepted.png")
+    assert name == "vanja1"
+
+    # provera iz baze
     navigate_to("http://localhost:4000/api/semesters/1/registrations")
     
     assert String.contains?(page_source(), "{\"email\":\"vanja@gmail.com\",\"first_name\":\"vanja\",")
     assert String.contains?(page_source(), "\"index_number\":\"7474\",\"last_name\":\"vanjic\",\"status\":\"accepted\"}")
 
+    # postavljanje sifre iz mejla
     navigate_to("http://localhost:4000/dev/mailbox/")
 
     last_email = find_element(:class, "list-group-item")
@@ -99,15 +105,16 @@ defmodule MsnrApi.LoginTest do
     lozinka2 = find_within_element(form, :id, "Nri-Ui-TextInput-Potvrda-lozinke")
     sub = find_within_element(form, :class, "_f36c1748")
     
-    email |> fill_field("vanja@gmail.com")
+    email |> fill_field("vanja1@gmail.com")
     lozinka  |> fill_field("vanja123")
     lozinka2 |> fill_field("vanja123")
     sub |> click()
     :timer.sleep(6000)
     
+    # provera da li je student uspesno registrovan
     navigate_to("http://localhost:4000/api/semesters/1/registrations")
-    assert String.contains?(page_source(), "{\"email\":\"vanja@gmail.com\",\"first_name\":\"vanja\",")
-    assert String.contains?(page_source(), "\"index_number\":\"7474\",\"last_name\":\"vanjic\"")
+    assert String.contains?(page_source(), "{\"email\":\"vanja1@gmail.com\",\"first_name\":\"vanja1\",")
+    assert String.contains?(page_source(), "\"index_number\":\"7447\",\"last_name\":\"vanjic\"")
 
   end
 end
