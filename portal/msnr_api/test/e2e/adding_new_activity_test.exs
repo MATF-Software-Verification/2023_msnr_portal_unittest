@@ -20,7 +20,7 @@ defmodule MsnrApi.LoginTest do
     form = find_element(:class, "_e90e6910")
     em = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
 	ps = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
-    sub = find_within_element(form, :class, "_4d72d302")
+    sub = find_within_element(form, :tag, "button")
     
     em |> fill_field("test@professor")
     ps |> fill_field("test")
@@ -79,7 +79,5 @@ defmodule MsnrApi.LoginTest do
     cv = inner_text(cv)
 
     assert String.contains?(page_source(), cv)
-
-    # take_screenshot("scr/act_page.png")
   end
 end

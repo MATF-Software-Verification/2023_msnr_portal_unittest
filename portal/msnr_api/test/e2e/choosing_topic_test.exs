@@ -2,6 +2,7 @@ defmodule MsnrApi.LoginTest do
   use MsnrApiWeb.ConnCase
   use Hound.Helpers
 
+  @tag timeout: 80000
   hound_session()
   test "biranje tema za grupni rad" do
     maximize_window(current_window_handle())
@@ -21,8 +22,8 @@ defmodule MsnrApi.LoginTest do
 	ps = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
     sub = find_within_element(form, :class, "_4d72d302")
     
-    em |> fill_field("jelena")
-    ps |> fill_field("jelena")
+    em |> fill_field("nina@gmail.com")
+    ps |> fill_field("nina")
     sub |> click()
     :timer.sleep(6000)
 
@@ -96,8 +97,8 @@ defmodule MsnrApi.LoginTest do
 	ps = find_within_element(form, :id, "Nri-Ui-TextInput-Password")
     sub = find_within_element(form, :class, "_4d72d302")
     
-    em |> fill_field("jelena")
-    ps |> fill_field("jelena")
+    em |> fill_field("nina@gmail.com")
+    ps |> fill_field("nina")
     sub |> click()
     :timer.sleep(6000)
 

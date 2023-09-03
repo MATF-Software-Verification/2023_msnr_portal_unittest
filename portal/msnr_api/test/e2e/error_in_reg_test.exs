@@ -11,7 +11,7 @@ defmodule MsnrApi.LoginTest do
     username = find_within_element(form, :id, "Nri-Ui-TextInput-Ime")
     submit = find_within_element(form, :class, "_4d72d302")
 
-    # ne popunjavano sva polja
+    # ne popunjavamo sva polja
     username |> fill_field("Ana")
     submit |> click()
 

@@ -18,7 +18,7 @@ config :msnr_api, MsnrApi.Repo,
 config :msnr_api, MsnrApiWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "sJzQUpuonJpQHuJ+f7hhoqCwFoVhNOOxpU0aeKD0T9Cc5RFUYiBMMFkNHcCTwXTw",
-  server: false
+  server: true
 
 # In test we don't send emails.
 config :msnr_api, MsnrApi.Mailer, adapter: Swoosh.Adapters.Test

@@ -17,17 +17,17 @@ defmodule MsnrApi.LoginTest do
     :timer.sleep(3000)
     assert current_url() == "http://localhost:8080/register"
 
-    form = find_element(:class, "_c69dad1f")
-    email = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
-    ime = find_within_element(form, :id, "Nri-Ui-TextInput-Ime")
-    prezime = find_within_element(form, :id, "Nri-Ui-TextInput-Prezime")
-    indeks = find_within_element(form, :id, "Nri-Ui-TextInput-Broj-indeksa")
-    submit = find_within_element(form, :class, "_4d72d302")
+    forma = find_element(:class, "_c69dad1f")
+    email = find_within_element(forma, :id, "Nri-Ui-TextInput-Email")
+    ime = find_within_element(forma, :id, "Nri-Ui-TextInput-Ime")
+    prezime = find_within_element(forma, :id, "Nri-Ui-TextInput-Prezime")
+    indeks = find_within_element(forma, :id, "Nri-Ui-TextInput-Broj-indeksa")
+    submit = find_within_element(forma, :class, "_4d72d302")
     
-    email |> fill_field("vanja1@gmail.com")
-    ime |> fill_field("vanja1")
-    prezime |> fill_field("vanjic")
-    indeks |> fill_field("7447")
+    email |> fill_field("sanja@gmail.com")
+    ime |> fill_field("sanja")
+    prezime |> fill_field("sanja")
+    indeks |> fill_field("8008")
     submit |> click()
     :timer.sleep(6000)
 
@@ -70,13 +70,13 @@ defmodule MsnrApi.LoginTest do
     poslednje_prihvaceni = find_element(:class, "_8c8496be")
     name = inner_text(poslednje_prihvaceni)
 
-    assert name == "vanja1"
+    assert name == "sanja sanja 8008"
 
     # provera iz baze
     navigate_to("http://localhost:4000/api/semesters/1/registrations")
     
-    assert String.contains?(page_source(), "{\"email\":\"vanja@gmail.com\",\"first_name\":\"vanja\",")
-    assert String.contains?(page_source(), "\"index_number\":\"7474\",\"last_name\":\"vanjic\",\"status\":\"accepted\"}")
+    assert String.contains?(page_source(), "{\"email\":\"sanja@gmail.com\",\"first_name\":\"sanja\",")
+    assert String.contains?(page_source(), "\"index_number\":\"8008\",\"last_name\":\"sanja\",\"status\":\"accepted\"}")
 
     # postavljanje sifre iz mejla
     navigate_to("http://localhost:4000/dev/mailbox/")
@@ -103,18 +103,18 @@ defmodule MsnrApi.LoginTest do
     email = find_within_element(form, :id, "Nri-Ui-TextInput-Email")
     lozinka = find_within_element(form, :id, "Nri-Ui-TextInput-Lozinka")
     lozinka2 = find_within_element(form, :id, "Nri-Ui-TextInput-Potvrda-lozinke")
-    sub = find_within_element(form, :class, "_f36c1748")
+    podnesi = find_within_element(form, :class, "_f36c1748")
     
-    email |> fill_field("vanja1@gmail.com")
-    lozinka  |> fill_field("vanja123")
-    lozinka2 |> fill_field("vanja123")
-    sub |> click()
+    email |> fill_field("sanja@gmail.com")
+    lozinka  |> fill_field("sanja")
+    lozinka2 |> fill_field("sanja")
+    podnesi |> click()
     :timer.sleep(6000)
     
     # provera da li je student uspesno registrovan
     navigate_to("http://localhost:4000/api/semesters/1/registrations")
-    assert String.contains?(page_source(), "{\"email\":\"vanja1@gmail.com\",\"first_name\":\"vanja1\",")
-    assert String.contains?(page_source(), "\"index_number\":\"7447\",\"last_name\":\"vanjic\"")
+    assert String.contains?(page_source(), "{\"email\":\"sanja@gmail.com\",\"first_name\":\"sanja\",")
+    assert String.contains?(page_source(), "\"index_number\":\"8008\",\"last_name\":\"sanja\"")
 
   end
 end
