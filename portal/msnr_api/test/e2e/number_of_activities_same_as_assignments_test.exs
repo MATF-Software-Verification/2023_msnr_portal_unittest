@@ -10,6 +10,7 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
     #Za ovaj test neophodno je uneti proizvoljan broj aktivnosti u bazu
     maximize_window(current_window_handle())
 
+    # logovanje profesora
     navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
 	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
@@ -19,7 +20,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	fill_field({:id, "Nri-Ui-TextInput-Password"}, "test")
 	find_element(:class, "_4d72d302") |> click()
 	:timer.sleep(2000)
-	
+
+	# biramo tab sa aktivnostima
 	maximize_window(current_window_handle())
 	header = find_element(:class, "_c7f4942c")
     tabs = find_within_element(header, :class, "_84f7a906")
@@ -29,23 +31,25 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	activities |> click()
 	:timer.sleep(3000)
 	assert current_path() == "/professor/activities"
-	
+
+	# racunamo broj aktivnosti
 	table = find_element(:class, "_d4912e87")
 	rows = find_all_within_element(table, :class, "_265f8938")
 	lR = length(rows)
 	:timer.sleep(2000)
 	
-	
+	# biramo poslednji tab
 	{tab, _others} = List.pop_at(allTabs, 5)
 	asgns = find_within_element(tab, :tag, "a")
 	asgns |> click()
 	:timer.sleep(3000)
 	assert current_path() == "/professor/activities/0/assignments"
-	
+
+	# racunamo broj aktivnosti
 	side = find_element(:class, "_938412d5")
 	allActivities = find_all_within_element(side, :tag, "a")
 	lAct = length(allActivities)
-	
+
 	assert lR == lAct
 	
 	delete_cookies()
