@@ -32,7 +32,7 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	:timer.sleep(3000)
 	assert current_path() == "/professor/activities"
 
-	
+	# ako prijava nije otvorena i aktivnost nije zastarela, profesor moze da otvori prijavu za tu aktivnost
 	table = find_element(:class, "_d4912e87")
 	rows = find_all_within_element(table, :class, "_265f8938")
 	row = Enum.find(rows, fn r ->
@@ -53,6 +53,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 		end
 	end
 	)
+
+	# profesor otvara prijavu za tu aktivnost
 	txtRow = find_all_within_element(row, :class, "_9818385")
 	{txtData, _others} = List.pop_at(txtRow, 2)
 	txt = visible_text(txtData)
@@ -85,6 +87,8 @@ defmodule ProfessorCreatesChangesActivityInfoTest do
 	assert openedTxt == "Da"
 	
 	#assert
+
+	# biramo poslednji tab
 	{tab, _others} = List.pop_at(allTabs, 5)
 	asgns = find_within_element(tab, :tag, "a")
 	asgns |> click()
