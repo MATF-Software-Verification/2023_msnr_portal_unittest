@@ -14,6 +14,7 @@ defmodule ProfessorGradesAnAssignmentTest do
 	#Za ovaj test neophodno je da u bazi postoji barem jedna aktivnost za koju su prijave zatvorene i da postoje studenti koji su se prijavili za tu aktivnost
     maximize_window(current_window_handle())
 
+    # logovanje profesora
     navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
 	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
@@ -23,7 +24,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 	fill_field({:id, "Nri-Ui-TextInput-Password"}, "test")
 	find_element(:class, "_4d72d302") |> click()
 	:timer.sleep(2000)
-	
+
+        # biramo poslednji tab
 	maximize_window(current_window_handle())
 	header = find_element(:class, "_c7f4942c")
     tabs = find_within_element(header, :class, "_84f7a906")
@@ -32,7 +34,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 	asgn = find_within_element(tab, :tag, "a")
 	asgn |> click()
 	:timer.sleep(3000)
-	
+
+	# nadjemo trazenu aktivnost
 	side = find_element(:class, "_938412d5")
 	all = find_all_within_element(side, :tag, "a")
 	#all = find_all_within_element(side, :link_text, "Recenzija")
@@ -51,7 +54,8 @@ defmodule ProfessorGradesAnAssignmentTest do
     tbody = find_within_element(table, :tag, "tbody")
 	rows = find_all_within_element(tbody, :class, "_265f8938")
 
-	
+
+	# nadjemo studente koji nema ocenu
 	not_graded = Enum.filter(rows, fn r ->
 		data = find_all_within_element(r, :class, "_9818385")
 		{done, _others} = List.pop_at(data, 1)
@@ -63,7 +67,7 @@ defmodule ProfessorGradesAnAssignmentTest do
 	end
 	)
 
-	
+	# ocenjujemo studenta
 	{first, _others} = List.pop_at(not_graded, 0)
 	td = find_within_element(first, :class, "_311c48ca")
 	div = find_within_element(td, :class, "_324310c2") 
@@ -82,7 +86,7 @@ defmodule ProfessorGradesAnAssignmentTest do
 	refresh_page()
 	:timer.sleep(4000)
 	
-	
+	# provera unete ocene
 	table = find_element(:class, "_d4912e87")
     tbody = find_within_element(table, :tag, "tbody")
 	rows = find_all_within_element(tbody, :class, "_265f8938")
