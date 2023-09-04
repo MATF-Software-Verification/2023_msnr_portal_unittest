@@ -11,10 +11,11 @@ defmodule ProfessorGradesAnAssignmentTest do
 
   @tag timeout: 800000
   test "check whether signinUp or signinOff for a assignment was successful" do
-    # Za ovaj test neophodno je imati barem jednog studenta u bazi i barem jednu aktivnost za koju su 
+    # Za ovaj test neophodno je imati barem jednog studenta u bazi i aktivnost " Recenzija" za koju su 
     # prijave otvorene kako bi se student mogao prijaviti ili odjaviti za tu aktivnost
     maximize_window(current_window_handle())
 
+    # logovanje studenta
     navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
 	assert {:ok, _element} = search_element(:link_text, "Prijavi se")
@@ -33,7 +34,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 	asgn = find_within_element(tab, :tag, "a")
 	asgn |> click()
 	:timer.sleep(3000)
-	
+
+	# proveravamo da li postoji aktivnost Recenzija
 	tasks = find_element(:class, "accordion-v3")
 	all = find_all_within_element(tasks, :class, "accordion-v3-entry")
 	task = Enum.find(all, fn t ->
@@ -48,7 +50,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 	btTask = find_within_element(task, :class, "accordion-v3-entry-header")
 	btTask |> click()
 	:timer.sleep(3000)
-	
+
+	# prijava za aktivnost
 	section = find_within_element(task, :class, "accordion-v3-entry-panel")
 	btPrijava = find_within_element(section, :tag, "button")
 	:timer.sleep(1000)
@@ -59,7 +62,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 	:timer.sleep(3000)
 	refresh_page()
 	:timer.sleep(3000)
-	
+
+	# logovanje profesora
 	navigate_to("http://localhost:8080")
 	:timer.sleep(1000) 
 	header = find_element(:class, "_c7f4942c")
@@ -75,7 +79,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 	fill_field({:id, "Nri-Ui-TextInput-Password"}, "test")
 	find_element(:class, "_4d72d302") |> click()
 	:timer.sleep(2000)
-	
+
+	# biramo poslednji tab
 	maximize_window(current_window_handle())
 	header = find_element(:class, "_c7f4942c")
     tabs = find_within_element(header, :class, "_84f7a906")
@@ -90,7 +95,8 @@ defmodule ProfessorGradesAnAssignmentTest do
 	[first | _tail] = all
 	first |> click()
 	:timer.sleep(3000)
-	
+
+	# provera da li je taj student prijavljen za tu aktivnost
 	table = find_element(:class, "_d4912e87")
     tbody = find_within_element(table, :tag, "tbody")
 	rows = find_all_within_element(tbody, :class, "_265f8938")
