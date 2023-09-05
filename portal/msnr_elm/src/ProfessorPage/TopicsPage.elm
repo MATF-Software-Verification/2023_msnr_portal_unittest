@@ -220,7 +220,7 @@ deleteTopic : Int -> { a | accessToken : String, currentSemesterId : Int, apiBas
 deleteTopic id { accessToken, currentSemesterId, apiBaseUrl } =
     Api.delete
         { apiBaseUrl = apiBaseUrl
-        , endpoint = Api.endpoints.topics currentSemesterId ++ "/" ++ String.fromInt id
+        , endpoint = Api.endpoints.topic ++ "/" ++ String.fromInt id
         , token = accessToken
         , expect = Http.expectWhatever DeletedTopic
         }
